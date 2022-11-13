@@ -1,0 +1,77 @@
+
+<div class="container-fluid icon-sidebar-nav h-100">
+  <div class="row h-100">
+    <main class="main-content col">
+      <div class="main-content-container container-fluid px-4 my-auto h-100">
+        <div class="row no-gutters h-100">
+          <div class="auth-form mx-auto my-auto">
+            <div *ngIf="error?.length" class="alert alert-warning alert-dismissible fade show mb-4" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="dismissError($event)">
+                <span aria-hidden="true">×</span>
+              </button>
+              <i class="fa fa-exclamation mx-2"></i>
+              {{ error }}
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <img class="auth-form__logo d-table mx-auto mb-3" [src]="logo | escapeUrl" alt="Health Base">
+                <h5 class="auth-form__title text-center mb-4">{{ 'WelcomeToFireAdmin' | translate }}</h5>
+                <form class="form-row" (ngSubmit)="onSubmit($event, submitButton)" #registerForm>
+                  <div class="form-group col-md-6">
+                    <label for="inputFname">{{ 'FirstName' | translate }}</label>
+                    <input type="text" class="form-control" id="inputFname" name="inputFname" aria-describedby="firstNameHelp" placeholder="{{ 'FirstName' | translate }}" [(ngModel)]="fname" [class.is-invalid]="registerForm.isSubmitted && !fnameInput.checkValidity()" required #fnameInput>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputLname">{{ 'LastName' | translate }}</label>
+                    <input type="text" class="form-control" id="inputlname" name="inputlname" aria-describedby="lastNameHelp" placeholder="{{ 'LastName' | translate }}" [(ngModel)]="lname" [class.is-invalid]="registerForm.isSubmitted && !lnameInput.checkValidity()" required #lnameInput>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputEmail">{{ 'EmailAddress' | translate }}</label>
+                    <input type="email" class="form-control" id="inputEmail" name="inputEmail" aria-describedby="emailHelp" placeholder="{{ 'EnterEmail' | translate }}" [(ngModel)]="email" [class.is-invalid]="registerForm.isSubmitted && !emailInput.checkValidity()" required #emailInput>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputMobile">{{ 'Mobile' | translate }}</label>
+                    <div class="input-group input-group-seamless">
+                      <div class="input-group-prepend">
+                        <select class="form-control" style="border-color: transparent;" [(ngModel)]="mcode" name="mcode">
+                          <option *ngFor="let c of mobileCodes" [value]="c.code">{{c.code}}</option>
+                        </select>
+                      </div>
+                      <input type="tel" style="padding-left: 95px;" class="form-control" id="inputMobile" name="inputMobile" aria-describedby="mobileHelp" placeholder="{{ 'Mobile' | translate }}" [(ngModel)]="mobile" [class.is-invalid]="registerForm.isSubmitted && (!mobileInput.checkValidity() || !users.validE164(mcode + mobile))" required #mobileInput>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputPassword">{{ 'Password' | translate }}</label>
+                    <input type="password" class="form-control" id="inputPassword" name="inputPassword" placeholder="{{ 'Password' | translate }}" [(ngModel)]="password" [class.is-invalid]="registerForm.isSubmitted && (!passwordInput.checkValidity() || password !== passwordConfirmation)" required #passwordInput>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputPasswordConfirmation">{{ 'RepeatPassword' | translate }}</label>
+                    <input type="password" class="form-control" id="inputPasswordConfirmation" name="inputPasswordConfirmation" placeholder="{{ 'RepeatPassword' | translate }}" [(ngModel)]="passwordConfirmation" [class.is-invalid]="registerForm.isSubmitted && (!passwordConfirmationInput.checkValidity() || password !== passwordConfirmation)" required #passwordConfirmationInput>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="specialityInput">{{ 'Speciality' | translate }}</label>
+                    <input type="text" class="form-control" id="specialityInput" name="specialityInput" placeholder="{{ 'Speciality' | translate }}" [(ngModel)]="speciality">
+                  </div>
+                  <div class="form-group col-md-6  mb-4">
+                    <label for="hospitalInput">{{ 'Hospital' | translate }}</label>
+                    <input type="text" class="form-control" id="hospitalInput" name="hospitalInput" placeholder="{{ 'Hospital' | translate }}" [(ngModel)]="hospital">
+                  </div>
+                  <div class="form-group col-md-6  mb-4">
+                    <label for="inputExp">{{ 'Experience' | translate }}</label>
+                    <input type="text" class="form-control" id="inputExp" name="inputExp" placeholder="{{ 'Experience' | translate }}" [(ngModel)]="experience">
+                  </div>
+                  <button type="submit" class="btn btn-pill btn-accent d-table mx-auto" [disabled]="submitButton.isDisabled" #submitButton>
+                    {{ 'CreateAccount' | translate }} <i *ngIf="submitButton.isLoading" class="fas fa-circle-notch fa-spin ml-1"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+            <div class="auth-form__meta text-center mb-4 mt-4 mt-4">
+              <a [routerLink]="navigation.getRouterLink('login')">{{ ('SignIn' | translate) }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

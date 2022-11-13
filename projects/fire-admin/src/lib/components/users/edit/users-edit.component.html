@@ -1,0 +1,121 @@
+  <!-- Default Light Table -->
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card card-small mb-4 pt-3">
+        <div class="card-header border-bottom text-center">
+          <div class="edit-user-details__avatar mb-3 mx-auto">
+            <img [src]="avatarSrc | escapeUrl" alt="User Avatar">
+            <label class="edit-user-details__avatar__change">
+              <i class="material-icons mr-1">&#xE439;</i>
+              <input type="file" accept="image/*" id="userProfilePicture" class="d-none" (change)="onAvatarChange($event)">
+            </label>
+          </div>
+          <h4 class="mb-0" title="{{ (userData?.birthDate | shortdate) || '' }}">
+            {{ (userData?.firstName || '') + ' ' + (userData?.lastName || '') }}
+          </h4>
+          <span class="text-muted d-block mb-2">{{ allRoles[userData?.role] || '' }}</span>
+          <span class="badge badge-warning mt-1 mb-2" style="color: white">uid: {{ userData?.id }}</span>
+          <!-- <button type="button" class="mb-2 btn btn-sm btn-pill btn-outline-primary mr-2" [routerLink]="navigation.getRouterLink('users', 'profile', id || '')">
+            <i class="material-icons mr-1">person</i>{{ 'Profile' | translate }}
+          </button> -->
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item px-4">
+            <qr-code [value]="profileUrl" size="300" errorCorrectionLevel="M"></qr-code>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card card-small mb-4">
+        <div class="card-header border-bottom">
+          <h6 class="m-0">{{ role == userRoleMap.Doctor ? 'Doctor Details' : ('UserDetails' | translate) }}</h6>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item p-3">
+            <div class="row">
+              <div class="col">
+                <form #editUserForm>
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label for="firstName">{{ 'FirstName' | translate }}</label>
+                      <input type="text" class="form-control" id="firstName" [(ngModel)]="firstName" name="firstName" [class.is-invalid]="editUserForm.isSubmitted && !firstNameInput.checkValidity()" required #firstNameInput>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="lastName">{{ 'LastName' | translate }}</label>
+                      <input type="text" class="form-control" id="lastName" [(ngModel)]="lastName" name="lastName" [class.is-invalid]="editUserForm.isSubmitted && !lastNameInput.checkValidity()" required #lastNameInput>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="emailAddress">{{ 'Email' | translate }}</label>
+                      <div class="input-group input-group-seamless">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="material-icons">&#xE0BE;</i>
+                          </div>
+                        </div>
+                        <input type="email" class="form-control" id="emailAddress" [(ngModel)]="email" name="email" [class.is-invalid]="editUserForm.isSubmitted && !emailInput.checkValidity()" required #emailInput>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6" *ngIf="role == userRoleMap.Doctor">
+                      <label for="pass">{{ 'Password' | translate }}</label>
+                      <input type="password" class="form-control" id="pass" [(ngModel)]="password" name="password" [class.is-invalid]="editUserForm.isSubmitted && !passInput.checkValidity()" required #passInput>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="mobile">{{ 'Mobile' | translate }}</label>
+                      <div class="input-group input-group-seamless">
+                        <div class="input-group-prepend">
+                          <select class="form-control" style="border-color: transparent;" [(ngModel)]="mcode" name="mcode">
+                            <option *ngFor="let c of mobileCodes" [value]="c.code">{{c.code}}</option>
+                          </select>
+                        </div>
+                        <input type="tel" style="padding-left: 95px;" class="form-control" id="inputMobile" name="inputMobile" aria-describedby="mobileHelp" placeholder="{{ 'Mobile' | translate }}" [(ngModel)]="mobile" [class.is-invalid]="editUserForm.isSubmitted && (!mobileInput.checkValidity() || !users.validE164(mcode + mobile))" required #mobileInput>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="birthDate">{{ 'BirthDate' | translate }}</label>
+                      <div class="input-group input-group-seamless">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="material-icons">calendar_today</i>
+                          </div>
+                        </div>
+                        <input type="date" class="form-control" id="birthDate" [(ngModel)]="birthDate" name="birthDate">
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="gender">{{ 'Gender' | translate }}</label>
+                      <select class="custom-select" [(ngModel)]="gender" name="gender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-6" *ngIf="role == userRoleMap.Doctor">
+                      <label for="speciality">{{ 'Speciality' | translate }}</label>
+                      <input type="text" class="form-control" id="speciality" [(ngModel)]="speciality" name="speciality">
+                    </div>
+                    <div class="form-group col-md-6" *ngIf="role == userRoleMap.Doctor">
+                      <label for="Hospital">{{ 'Hospital' | translate }}</label>
+                      <input type="text" class="form-control" id="Hospital" [(ngModel)]="Hospital" name="Hospital">
+                    </div>
+                    <div class="form-group col-md-6" *ngIf="role == userRoleMap.Doctor">
+                      <label for="experience">{{ 'Experience' | translate }}</label>
+                      <input type="text" class="form-control" id="experience" [(ngModel)]="experience" name="experience">
+                    </div>
+                    <div class="form-group col-md-8" *ngIf="role == userRoleMap.Doctor">
+                      <label for="userBio">{{ 'Bio' | translate }}</label>
+                      <textarea style="min-height: 87px;" id="userBio" [(ngModel)]="bio" name="userBio" class="form-control" placeholder="{{ 'BioPlaceholder' | translate }}"></textarea>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-accent" [disabled]="updateButon.isDisabled" (click)="updateUser($event, editUserForm)" #updateButon>
+                    {{ 'UpdateUser' | translate }} <i *ngIf="updateButon.isLoading" class="fas fa-circle-notch fa-spin ml-1"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- End Default Light Table -->

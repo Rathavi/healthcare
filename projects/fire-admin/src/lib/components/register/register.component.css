@@ -1,0 +1,8 @@
+.icon-sidebar-nav .main-content {
+    padding: 0;
+}
+
+.icon-sidebar-nav .main-content .auth-form {
+    width: 600px;
+    max-width: 100%;
+}

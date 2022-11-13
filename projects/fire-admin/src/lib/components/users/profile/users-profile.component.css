@@ -1,0 +1,21 @@
+.user-details__avatar img {
+  height: 100px;
+}
+qr-code {
+  display: block;
+  width: 300px;
+  max-width: 100%;
+  margin: auto;
+}
+::ng-deep qr-code canvas {
+  max-width: 100%;
+}
+.page-title {
+  cursor: pointer;
+  padding: 10px 25px;
+  border-bottom: 4px solid transparent;
+  font-size: 1.2rem;
+}
+.page-title.active {
+  border-bottom-color: #007bff;
+}
